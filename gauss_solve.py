@@ -67,10 +67,11 @@ def plu_c(A):
     # Create a 2D array in Python and flatten it
     n = len(A)
     flat_array_2d = [item for row in A for item in row]
+    P_1d = [i for i in range(n)]
 
     # Convert to a ctypes array
     c_A = (ctypes.c_double * len(flat_array_2d))(*flat_array_2d)
-    c_P = (ctypes.c_int * n)()
+    c_P = (ctypes.c_int * n)(*P_1d)
 
     # Define the function signature
     lib.plu.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_int))

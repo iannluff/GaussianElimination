@@ -90,11 +90,18 @@ def lu_python(A):
     
 #     return P, L, U
 
+def swap_rows(mat, row1, row2):
+    temp = mat[row1]
+    mat[row1] = mat[row2]
+    mat[row2] = temp
+
+    return mat
+
 def plu_python(A):
     n = len(A)
     P = np.eye(n)
     U = np.array(A, dtype=float)
-    L = np.zeros((n,n), dtype=float)
+    L = np.zeros(shape=(n,n), dtype=float)
     
     for k in range(n-1):
         max_row_index = k
@@ -104,8 +111,8 @@ def plu_python(A):
                 max_value = abs(U[l][k])
                 max_row_index = l    
         if max_row_index != k:
-            U[[k, max_row_index]] = U[[max_row_index, k]]
-            P[[k, max_row_index]] = P[[max_row_index, k]]
+            P = swap_rows(P, k, max_row_index)
+            U = swap_rows(U, k, max_row_index)
             L[[k, max_row_index], 0:k] = L[[max_row_index, k], 0:k] 
         for i in range(k+1, n):
             L[i][k] = U[i][k] / U[k][k]

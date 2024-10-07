@@ -60,42 +60,34 @@ void lu_in_place_reconstruct(int n, double A[n][n])
 }
 
 void plu(int n, double A[n][n], int P[n]) {
-    for (int i = 0; i < n; i++) {
-        P[i] = i;
-    }
+  for(int k = 0; k < n; ++k) {
+    int max_row = k;
+    double max_value = fabs(A[k][k]);
     
-    double L[n][n];
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            L[i][j] = 0.0;
-        }
+    for (int i = k + 1; i < n; ++i) {
+      if (fabs(A[i][k]) > max_value) {
+        max_value = fabs(A[i][k]);
+        max_row = i;
+      }
     }
-    for (int k = 0; k < n; k++) {
-        int max_row_index = k;
-        double max_value = fabs(A[k][k]);
 
-        for (int l = k + 1; l < n; l++) {
-            if (fabs(A[l][k]) > max_value) {
-                max_value = fabs(A[l][k]);
-                max_row_index = l;
-            }
-        }
-        if (max_row_index != k) {
-            for (int j = 0; j < n; j++) {
-                SWAP(A[k][j], A[max_row_index][j], double);
-            }
-            SWAP(P[k], P[max_row_index], int);
-        }
+    if (max_row != k) {
+      SWAP(P[k], P[max_row], int);
+      for (int j = 0; j < n; ++j) {
+        SWAP(A[k][j], A[max_row][j], double);
+      }
+    }
 
-        for (int i = k + 1; i < n; i++) {
-            L[i][k] = A[i][k] / A[k][k];
-            for (int j = k; j < n; j++) {
-                A[i][j] -= L[i][k] * A[k][j];
-            }
-        }
+    for(int i = k; i < n; ++i) {
+      for(int j=0; j<k; ++j) {
+	A[k][i] -=  A[k][j] * A[j][i]; 
+      }
     }
-    
-    for (int i = 0; i < n; i++) {
-        L[i][i] = 1.0;
+    for(int i = k+1; i<n; ++i) {
+      for(int j=0; j<k; ++j) {
+	A[i][k] -= A[i][j]*A[j][k]; 
+      }
+      A[i][k] /= A[k][k];	
     }
+  }
 }

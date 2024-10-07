@@ -60,6 +60,38 @@ def lu_python(A):
 
     return unpack(A)
 
+def plu_c(A):
+    # Load the shared library
+    lib = ctypes.CDLL(gauss_library_path)
+
+    # Create a 2D array in Python and flatten it
+    n = len(A)
+    flat_array_2d = [item for row in A for item in row]
+
+    # Convert to a ctypes array
+    c_A = (ctypes.c_double * len(flat_array_2d))(*flat_array_2d)
+    c_P = (ctypes.c_int * n)()
+
+    # Define the function signature
+    lib.plu.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_int))
+
+    # Do the LU decomposition
+    lib.plu(n, c_A, c_P)
+
+    # Convert A back to a python matrix
+    modified_A = [
+        [c_A[i * n + j] for j in range(n)]
+        for i in range(n)
+    ]
+
+    # Obtain L and U
+    L, U = unpack(modified_A)
+
+    # Obtain P
+    P = list(c_P)
+
+    return P, L, U
+
 def plu_python(A):
     n = len(A)
     #P = np.eye(n)
@@ -99,7 +131,7 @@ def lu(A, use_c=False):
 
 def plu(A, use_c=False):
     if use_c:
-        raise NoImplementationInC()
+        return plu_c(A)
     else:
         return plu_python(A)
 

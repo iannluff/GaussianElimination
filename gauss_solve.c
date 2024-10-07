@@ -1,4 +1,5 @@
 #include "gauss_solve.h"
+#include <math.h>
 
 void gauss_solve_in_place(const int n, double A[n][n], double b[n])
 {

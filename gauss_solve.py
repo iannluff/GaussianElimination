@@ -61,9 +61,9 @@ def lu_python(A):
     return unpack(A)
 
 def plu_python(A):
-    A = np.array(A, dtype=float)
     n = len(A)
-    P = np.eye(n)
+    #P = np.eye(n)
+    P_1d = np.linspace(0, n-1, n)
     U = np.array(A, dtype=float)
     L = np.zeros((n,n), dtype=float)
     
@@ -76,20 +76,19 @@ def plu_python(A):
                 max_row_index = l    
         if max_row_index != k:
             U[[k, max_row_index]] = U[[max_row_index, k]]
-            P[[k, max_row_index]] = P[[max_row_index, k]]
-            L[[k, max_row_index], 0:k] = L[[max_row_index, k], 0:k] 
+            P_1d[k], P_1d[max_row_index] = P_1d[max_row_index], P_1d[k]
+            L[[k, max_row_index], :k] = L[[max_row_index, k], :k] 
         for i in range(k+1, n):
-            L[i, k] = U[i, k] / U[k, k]
+            L[i][k] = U[i][k] / U[k][k]
             for j in range(k, n):
-                U[i, j] -= L[i, k]*U[k, j]
+                U[i][j] -= L[i][k]*U[k][j]
     
     for m in range(n):
         L[m][m] = 1
     
-    P = P.tolist()
+    P = P_1d.astype(int).tolist()
     L = L.tolist()
     U = U.tolist()
-
     return P, L, U
 
 def lu(A, use_c=False):

@@ -76,11 +76,11 @@ def plu_python(A):
         if max_row_index != k:
             U[[k, max_row_index]] = U[[max_row_index, k]]
             P[[k, max_row_index]] = P[[max_row_index, k]]
-            L[[k, max_row_index], 0:k] = L[[max_row_index, k], 0:k] 
+            L[[k, max_row_index], :k] = L[[max_row_index, k], :k] 
         for i in range(k+1, n):
-            L[i, k] = U[i, k] / U[k, k]
+            L[i][k] = U[i][k] / U[k][k]
             for j in range(k, n):
-                U[i, j] -= L[i, k]*U[k, j]
+                U[i][j] -= L[i][k]*U[k][j]
     
     for m in range(n):
         L[m][m] = 1

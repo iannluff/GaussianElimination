@@ -60,34 +60,34 @@ def lu_python(A):
 
     return unpack(A)
 
- def plu_python(A):
-     n = len(A)
-     P = [[0 for _ in range(n)] for _ in range(n)]
-     
-     for i in range(n):
-         P[i][i] = 1
+def plu_python(A):
+    n = len(A)
+    P = [[0 for _ in range(n)] for _ in range(n)]
     
-     for k in range(n-1):
-         max_row_index = k
-         max_value = abs(A[k][k])
-         for l in range(k+1, n):
-             if abs(A[l][k]) > max_value:
-                 max_value = abs(A[l][k])
-                 max_row_index = l    
-         if max_row_index != k:
-             A[k], A[max_row_index] = A[max_row_index], A[k]
-             P[k], P[max_row_index] = P[max_row_index], P[k]
-         for i in range(k,n):
-             for j in range(k):
-                 A[k][i] -= A[k][j] * A[j][i]
-         for i in range(k+1, n):
-             for j in range(k):
-                 A[i][k] -= A[i][j] * A[j][k]
-             A[i][k] /= A[k][k]
+    for i in range(n):
+        P[i][i] = 1
     
-     L, U = unpack(A)
+    for k in range(n-1):
+        max_row_index = k
+        max_value = abs(A[k][k])
+        for l in range(k+1, n):
+            if abs(A[l][k]) > max_value:
+                max_value = abs(A[l][k])
+                max_row_index = l    
+        if max_row_index != k:
+            A[k], A[max_row_index] = A[max_row_index], A[k]
+            P[k], P[max_row_index] = P[max_row_index], P[k]
+        for i in range(k,n):
+            for j in range(k):
+                A[k][i] -= A[k][j] * A[j][i]
+        for i in range(k+1, n):
+            for j in range(k):
+                A[i][k] -= A[i][j] * A[j][k]
+            A[i][k] /= A[k][k]
     
-     return P, L, U
+    L, U = unpack(A)
+    
+    return P, L, U
 
 """ ef plu_python(A):
     n = len(A)

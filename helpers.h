@@ -1,13 +1,3 @@
-/*----------------------------------------------------------------
-* File:     helpers.h
-*----------------------------------------------------------------
-*
-* Author:   Marek Rychlik (rychlik@arizona.edu)
-* Date:     Sun Sep 22 17:52:09 2024
-* Copying:  (C) Marek Rychlik, 2020. All rights reserved.
-*
-*----------------------------------------------------------------*/
-
 #ifndef PRINT_HELPERS_H
 #define PRINT_HELPERS_H
 

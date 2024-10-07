@@ -1,12 +1,3 @@
-/*----------------------------------------------------------------
-* File:     gauss_solve.c
-*----------------------------------------------------------------
-*
-* Author:   Marek Rychlik (rychlik@arizona.edu)
-* Date:     Sun Sep 22 15:40:29 2024
-* Copying:  (C) Marek Rychlik, 2020. All rights reserved.
-*
-*----------------------------------------------------------------*/
 #include "gauss_solve.h"
 
 void gauss_solve_in_place(const int n, double A[n][n], double b[n])
@@ -65,4 +56,45 @@ void lu_in_place_reconstruct(int n, double A[n][n])
       }
     }
   }
+}
+
+void plu(int n, double A[n][n], int P[n]) {
+    for (int i = 0; i < n; i++) {
+        P[i] = i;
+    }
+    
+    double L[n][n];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            L[i][j] = 0.0;
+        }
+    }
+    for (int k = 0; k < n; k++) {
+        int max_row_index = k;
+        double max_value = fabs(A[k][k]);
+
+        for (int l = k + 1; l < n; l++) {
+            if (fabs(A[l][k]) > max_value) {
+                max_value = fabs(A[l][k]);
+                max_row_index = l;
+            }
+        }
+        if (max_row_index != k) {
+            for (int j = 0; j < n; j++) {
+                SWAP(A[k][j], A[max_row_index][j], double);
+            }
+            SWAP(P[k], P[max_row_index], int);
+        }
+
+        for (int i = k + 1; i < n; i++) {
+            L[i][k] = A[i][k] / A[k][k];
+            for (int j = k; j < n; j++) {
+                A[i][j] -= L[i][k] * A[k][j];
+            }
+        }
+    }
+    
+    for (int i = 0; i < n; i++) {
+        L[i][i] = 1.0;
+    }
 }

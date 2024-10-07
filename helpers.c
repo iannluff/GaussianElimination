@@ -1,13 +1,3 @@
-/*----------------------------------------------------------------
- * File:     helpers.c
- *----------------------------------------------------------------
- *
- * Author:   Marek Rychlik (rychlik@arizona.edu)
- * Date:     Sun Sep 22 15:46:13 2024
- * Copying:  (C) Marek Rychlik, 2020. All rights reserved.
- *
- *----------------------------------------------------------------*/
-
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
